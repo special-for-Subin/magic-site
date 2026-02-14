@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For You ✨</title>
+
+<style>
+
+@keyframes pop {
+  0% { transform: translate(-50%,-50%) scale(0); }
+  60% { transform: translate(-50%,-50%) scale(1.1); }
+  100% { transform: translate(-50%,-50%) scale(1); }
+}
+
+
+body{
+margin:0;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#ffd6ec,#e0c3fc);
+overflow-x:hidden;
+text-align:center;
+color:#fff;
+}
+
+/* ENTER SCREEN */
+
+#enter{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+.enterBtn{
+padding:18px 40px;
+border:none;
+border-radius:40px;
+font-size:20px;
+background:#ff8fd8;
+color:white;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.enterBtn:hover{
+transform:scale(1.1);
+}
+
+/* MAIN */
+
+#main{
+display:none;
+padding:20px;
+}
+
+/* TRANSFORM */
+
+.transform{
+position:relative;
+max-width:320px;
+margin:auto;
+}
+
+.transform video,
+.transform img{
+width:100%;
+border-radius:20px;
+}
+
+#anime{
+position:absolute;
+top:0;
+left:0;
+clip-path: inset(0 50% 0 0);
+}
+
+/* BUTTONS */
+
+.levelBtn{
+margin:10px;
+padding:12px 20px;
+border:none;
+border-radius:25px;
+background:#ffffff33;
+color:white;
+cursor:pointer;
+}
+
+/* MESSAGE */
+
+.card{
+margin:30px auto;
+padding:20px;
+max-width:300px;
+background:#ffffff22;
+border-radius:20px;
+backdrop-filter:blur(10px);
+}
+
+/* STICKERS */
+
+.sticker{
+position:fixed;
+pointer-events:none;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+from{transform:translateY(-100px);}
+to{transform:translateY(110vh);}
+}
+
+/* SECRET HEART */
+
+.heart{
+position:fixed;
+bottom:20px;
+right:20px;
+font-size:28px;
+cursor:pointer;
+}
+
+/* MUSIC */
+
+.music{
+position:fixed;
+top:20px;
+right:20px;
+border:none;
+border-radius:50%;
+width:50px;
+height:50px;
+background:#ffffff33;
+color:white;
+cursor:pointer;
+}
+
+#specialText {
+  position: fixed;
+  bottom: 20px;         /* distance from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  opacity: 0;           /* hidden initially */
+  transition: opacity 8s ease;
+  pointer-events: none;  /* so it doesn’t block clicks */
+}
+
+
+</style>
+</head>
+
+<body>
+<div id="specialText">Special for you Subin ✨</div>
+
+<!-- ENTER -->
+
+<div id="enter">
+<h1>For You ✨</h1>
+<button class="enterBtn" onclick="start()">Enter Magic</button>
+</div>
+
+<!-- MAIN -->
+
+<div id="main">
+
+<h2>Real → Anime</h2>
+
+<div class="transform">
+  <video id="video1" src="animeVideo.mp4" autoplay muted loop></video>
+  <video id="video2" src="video.mp4" autoplay muted loop style="position:absolute; top:0; left:0;"></video>
+</div>
+
+<input type="range" min="0" max="100" value="58" oninput="slide(this.value)">
+
+
+<!-- LEVELS -->
+
+<h2>Unlock ⭐</h2>
+<button class="levelBtn"
+onclick="popSticker('level1.mp4')">Level 1</button>
+
+<button class="levelBtn"
+onclick="popSticker('level2.mp4')">Level 2</button>
+
+<button class="levelBtn"
+onclick="popSticker('level3.mp4')">Level 3</button>
+
+<!-- MESSAGE -->
+
+<div class="card">
+Your cosplay brings characters to life.
+I made this to make you smile 🌸
+</div>
+
+<h2>Keep shining ✨</h2>
+
+</div>
+
+<!-- SECRET -->
+
+<div class="heart"
+onclick="bigSurprise()">💖</div>
+
+<!-- MUSIC -->
+
+<button class="music"
+onclick="musicToggle()">♫</button>
+
+<audio id="song" loop>
+<source src="music.mp3">
+</audio>
+
+<script>
+
+
+window.onload = () => {
+  const v2 = document.getElementById('video2');
+  v2.style.clipPath = 'inset(0 42% 0 0)';
+
+  document.getElementById('song').play().catch(() => {
+    // some browsers block autoplay; user interaction may be needed
+  });
+};
+
+
+function slide(val){
+  const v2 = document.getElementById('video2');
+  // wipe from left to right
+  v2.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+}
+
+
+/* ENTER */
+
+function start(){
+enter.style.display="none";
+main.style.display="block";
+stickerRain();
+const text = document.getElementById("specialText");
+  text.style.opacity = 1;
+}
+
+/* SLIDER */
+
+
+/* STICKER RAIN */
+
+const gifs = [
+  "image1.png",
+  "image2.png",
+  "image3.png"
+];
+
+
+function stickerRain(){
+
+setInterval(()=>{
+
+let img=document.createElement("img");
+img.src=gifs[Math.floor(Math.random()*gifs.length)];
+img.className="sticker";
+
+img.style.left=Math.random()*100+"vw";
+img.style.width=(40+Math.random()*40)+"px";
+img.style.animationDuration=(4+Math.random()*4)+"s";
+
+document.body.appendChild(img);
+
+setTimeout(()=>img.remove(),8000);
+
+},700);
+}
+
+/* POP STICKER */
+function popSticker(videoFile){
+
+let vid = document.createElement("video");
+vid.src = videoFile;   // 👈 now dynamic
+vid.autoplay = true;
+vid.muted = true;
+vid.playsInline = true;
+vid.loop = true;
+
+vid.style.width = "180px";
+vid.style.position = "fixed";
+vid.style.left = "50%";
+vid.style.top = "50%";
+vid.style.transform = "translate(-50%,-50%)";
+vid.style.borderRadius = "20px";
+vid.style.boxShadow = "0 10px 30px rgba(0,0,0,0.3)";
+vid.style.animation = "pop 0.4s ease";
+
+document.body.appendChild(vid);
+
+// remove after 4 seconds
+setTimeout(()=>vid.remove(), 4000);
+}
+
+
+/* SECRET */
+
+function bigSurprise(){
+
+for(let i=0;i<25;i++){
+
+let div=document.createElement("div");
+div.innerHTML="✨";
+
+div.style.position="fixed";
+div.style.left=Math.random()*100+"vw";
+div.style.top=Math.random()*100+"vh";
+div.style.fontSize="24px";
+
+document.body.appendChild(div);
+
+setTimeout(()=>div.remove(),2000);
+}
+}
+
+/* MUSIC */
+
+function musicToggle(){
+let s=document.getElementById("song");
+
+if(s.paused) s.play();
+else s.pause();
+}
+
+</script>
+
+</body>
+</html>
